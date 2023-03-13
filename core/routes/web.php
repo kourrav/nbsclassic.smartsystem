@@ -142,6 +142,12 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('agents/email-log/{id}', 'ManageAgentsController@emailLog')->name('agents.email.log');
         Route::get('agents/email-details/{id}', 'ManageAgentsController@emailDetails')->name('agents.email.details');
 
+        //Permissoins Module 13-03-2023
+        Route::get('permissions', 'ManagePermissionsController@allPermissions')->name('permissions.all');
+        Route::get('permissions/create', 'ManagePermissionsController@createPermission')->name('permissions.create');
+        Route::post('permissions/store', 'ManagePermissionsController@storePermission')->name('permissions.store');
+        Route::get('permissions/{scope}/search', 'ManagePermissionsController@search')->name('permissions.search');
+
 
         /*
         |--------------------------------------------------------------------------

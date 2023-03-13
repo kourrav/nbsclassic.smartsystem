@@ -114,19 +114,19 @@
                     </div>
                 </li>
                 <li class="sidebar-menu-item sidebar-dropdown">
-                    <a href="javascript:void(0)" class="{{menuActive('admin.users*',3)}}">
-                        <i class="menu-icon las la-arrows-alt"></i>
-                        <span class="menu-title">@lang('Permissions Panel')</span>
+                    <a href="javascript:void(0)" class="{{menuActive('admin.permissions*',3)}}">
+                      <i class="menu-icon las la-arrows-alt"></i>
+                      <span class="menu-title">@lang('Permissions Panel')</span>
                     </a>
-                    <div class="sidebar-submenu {{menuActive('admin.agents*',2)}} ">
-                        <ul>
-                            <li class="sidebar-menu-item {{menuActive('admin.agents.all')}} ">
-                                <a href="{{route('admin.agents.all')}}" class="nav-link">
-                                  <i class="menu-icon las la-dot-circle"></i>
-                                  <span class="menu-title">@lang('All Permissions')</span>
-                                </a>
-                            </li>
-                        </ul>
+                    <div class="sidebar-submenu {{menuActive('admin.permissions*',2)}} ">
+                      <ul>
+                        <li class="sidebar-menu-item {{menuActive('admin.permissions.all')}} ">
+                          <a href="{{route('admin.permissions.all')}}" class="nav-link">
+                            <i class="menu-icon las la-dot-circle"></i>
+                            <span class="menu-title">@lang('All Permissions')</span>
+                          </a>
+                        </li>
+                      </ul>
                     </div>
                 </li>
 
