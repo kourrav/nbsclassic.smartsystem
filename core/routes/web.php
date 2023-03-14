@@ -118,11 +118,11 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('users/email-details/{id}', 'ManageUsersController@emailDetails')->name('users.email.details');
 
         //Users Type New Section 10-03-2023 By Ravinder Kaur
-        Route::get('users/categories', 'ManageUsersController@usersCategory')->name('users.categories');
-        Route::post('users/categories', 'ManageUsersController@usersCategoryStore')->name('users.categories.store');
-        Route::post('users/categories/update/{id}', 'ManageUsersController@usersCategoryUpdate')->name('users.categories.update');
-        Route::post('users/categories/active-disable', 'ManageUsersController@usersCategoryActiveDisabled')->name('users.categories.active.disable');
-        Route::get('users/categories-search', 'ManageUsersController@usersCategorySearch')->name('users.categories.search');
+        Route::get('roles', 'ManageUsersController@usersRole')->name('roles');
+        Route::post('roles', 'ManageUsersController@usersRoleStore')->name('roles.store');
+        Route::post('roles/update/{id}', 'ManageUsersController@usersRoleUpdate')->name('roles.update');
+        Route::post('roles/active-disable', 'ManageUsersController@usersRoleActiveDisabled')->name('roles.active.disable');
+        Route::get('roles-search', 'ManageUsersController@usersRoleSearch')->name('roles.search');
 
         Route::get('users/create', 'ManageUsersController@createUser')->name('users.create');
         Route::post('users/store', 'ManageUsersController@storeUser')->name('users.store');
@@ -141,13 +141,6 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('agents/login/{id}', 'ManageAgentsController@login')->name('agents.login');
         Route::get('agents/email-log/{id}', 'ManageAgentsController@emailLog')->name('agents.email.log');
         Route::get('agents/email-details/{id}', 'ManageAgentsController@emailDetails')->name('agents.email.details');
-
-        //Permissoins Module 13-03-2023
-        Route::get('permissions', 'ManagePermissionsController@allPermissions')->name('permissions.all');
-        Route::get('permissions/create', 'ManagePermissionsController@createPermission')->name('permissions.create');
-        Route::post('permissions/store', 'ManagePermissionsController@storePermission')->name('permissions.store');
-        Route::get('permissions/{scope}/search', 'ManagePermissionsController@search')->name('permissions.search');
-
 
         /*
         |--------------------------------------------------------------------------

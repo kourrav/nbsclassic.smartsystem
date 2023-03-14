@@ -50,9 +50,9 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group ">
-                                    <label for="category" class="form-control-label font-weight-bold">@lang('User Category') <span class="text-danger">*</span></label>
+                                    <label for="category" class="form-control-label font-weight-bold">@lang('User Role') <span class="text-danger">*</span></label>
                                     <select class="form-control" name="category" id="category" auto-complete="off" required>
-                                        <option value="">Select User Category</option>
+                                        <option value="">Select User Role</option>
                                         @foreach($categories as $c)
                                         <option value="{{ $c->id; }}">{{ $c->name; }}</option>
                                         @endforeach

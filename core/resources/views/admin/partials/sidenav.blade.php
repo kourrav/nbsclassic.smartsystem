@@ -56,13 +56,6 @@
                                 </a>
                             </li>
 
-                            <li class="sidebar-menu-item {{menuActive('admin.users.categories')}} ">
-                                <a href="{{route('admin.users.categories')}}" class="nav-link">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('User Categories')</span>
-                                </a>
-                            </li>
-
                             <li class="sidebar-menu-item  {{menuActive('admin.users.email.unverified')}}">
                                 <a href="{{route('admin.users.email.unverified')}}" class="nav-link">
                                     <i class="menu-icon las la-dot-circle"></i>
@@ -99,7 +92,7 @@
                 </li>
                 <li class="sidebar-menu-item sidebar-dropdown">
                     <a href="javascript:void(0)" class="{{menuActive('admin.users*',3)}}">
-                        <i class="menu-icon las la-users"></i>
+                        <i class="menu-icon las la-cubes"></i>
                         <span class="menu-title">@lang('Manage Agents')</span>
                     </a>
                     <div class="sidebar-submenu {{menuActive('admin.agents*',2)}} ">
@@ -114,22 +107,21 @@
                     </div>
                 </li>
                 <li class="sidebar-menu-item sidebar-dropdown">
-                    <a href="javascript:void(0)" class="{{menuActive('admin.permissions*',3)}}">
-                      <i class="menu-icon las la-arrows-alt"></i>
-                      <span class="menu-title">@lang('Permissions Panel')</span>
+                    <a href="javascript:void(0)" class="{{menuActive('admin.roles*',3)}}">
+                        <i class="menu-icon las la-chalkboard-teacher"></i>
+                        <span class="menu-title">@lang('Manage Roles')</span>
                     </a>
-                    <div class="sidebar-submenu {{menuActive('admin.permissions*',2)}} ">
-                      <ul>
-                        <li class="sidebar-menu-item {{menuActive('admin.permissions.all')}} ">
-                          <a href="{{route('admin.permissions.all')}}" class="nav-link">
-                            <i class="menu-icon las la-dot-circle"></i>
-                            <span class="menu-title">@lang('All Permissions')</span>
-                          </a>
-                        </li>
-                      </ul>
+                    <div class="sidebar-submenu {{menuActive('admin.roles*',2)}} ">
+                        <ul>
+                            <li class="sidebar-menu-item {{menuActive('admin.roles')}} ">
+                                <a href="{{route('admin.roles')}}" class="nav-link">
+                                  <i class="menu-icon las la-dot-circle"></i>
+                                  <span class="menu-title">@lang('All Roles')</span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </li>
-
                 <li class="sidebar-menu-item sidebar-dropdown">
                     <a href="javascript:void(0)" class="{{menuActive('admin.deposit*',3)}}">
                         <i class="menu-icon las la-credit-card"></i>

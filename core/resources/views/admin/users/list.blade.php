@@ -10,7 +10,7 @@
                             <tr>
                                 <th>@lang('User')</th>
                                 <th>@lang('Email-Phone')</th>
-                                <th>@lang('User Category')</th>
+                                <th>@lang('User Role')</th>
                                 <th>@lang('Country')</th>
                                 <th>@lang('Joined At')</th>
                                 <th>@lang('Action')</th>

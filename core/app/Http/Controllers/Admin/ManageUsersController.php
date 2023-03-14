@@ -265,65 +265,88 @@ class ManageUsersController extends Controller
 
 
     //Users Type New Section 10-03-2023 By Ravinder Kaur
-    public function usersCategory()
+    public function usersRole()
     {
-        $pageTitle = 'Users Category';
-        $emptyMessage = 'No users category found';
-        $userstype = Category::orderBy('id','asc')->paginate(getPaginate());
-        return view('admin.users.users_category', compact('pageTitle', 'emptyMessage', 'userstype'));
+        $pageTitle = 'Manage Roles';
+        $emptyMessage = 'No roles found';
+        $userstype = Category::orderBy('id','asc')->paginate(getPaginate(5));
+        return view('admin.roles.role', compact('pageTitle', 'emptyMessage', 'userstype'));
     }
 
-    public function usersCategorySearch(Request $request){
+    public function usersRoleSearch(Request $request){
         $search = $request->search;
         //echo "<pre>"; print_r($search); die;
-        $pageTitle = 'Users Category - '. $search;
-        $emptyMessage = 'No users category found';
+        $pageTitle = 'Role - '. $search;
+        $emptyMessage = 'No roles found';
         $userstype = Category::where(function ($usertype) use ($search) {
             $usertype->where('name', 'like', "%$search%");
         });
-        $userstype = $userstype->paginate(getPaginate());
-        return view('admin.users.users_category', compact('pageTitle', 'emptyMessage', 'userstype', 'search'));
+        $userstype = $userstype->paginate(getPaginate(5));
+        return view('admin.roles.role', compact('pageTitle', 'emptyMessage', 'userstype', 'search'));
     }
 
-    public function usersCategoryStore(Request $request){
+    public function usersRoleStore(Request $request){
         $this->validate($request,[
           'name'        => 'required|string|unique:user_categories',
           'description' => 'required|string',
+          //'booking_permission' => 'booking_permission|string',
         ]);
 
-        $category = new Category();
+        $category       = new Category();
         $category->name = $request->name;
         $category->description = $request->description;
+        $booking_permission =  $request->booking_permission ? $request->booking_permission : array();
+        $booking_string = "";
+        if(!empty($booking_permission))
+        {
+          $booking_string = implode(',',$booking_permission);
+        }
+        $category->role_permission = $booking_string;
         $category->save();
-        $notify[] = ['success', 'User Category save successfully.'];
+        $notify[] = ['success', 'Role save successfully.'];
         return back()->withNotify($notify);
     }
 
-    public function usersCategoryUpdate(Request $request,$id){
+    public function usersRoleUpdate(Request $request,$id){
         $this->validate($request,[
           'name'        => 'required|string',
           'description' => 'required|string',
+          //'booking_permission' => 'booking_permission|string',
         ]);
-
+        //echo "<pre>"; print_r($request->all()); die('test');
         $category = Category::find($id);
         $category->name = $request->name;
         $category->description = $request->description;
+        $booking_permission =  $request->booking_permission_edit ? $request->booking_permission_edit : array();
+        $booking_string = "";
+        if(!empty($booking_permission))
+        {
+          $booking_string = implode(',',$booking_permission);
+        }
+        $category->role_permission = $booking_string;
         $category->save();
 
-        $notify[] = ['success', 'User Category update successfully.'];
+        $notify[] = ['success', 'Role update successfully.'];
         return back()->withNotify($notify);
     }
 
-    public function usersCategoryActiveDisabled(Request $request){
+    public function usersRoleActiveDisabled(Request $request){
         $request->validate(['id' => 'required|integer']);
-
-        $category = Category::find($request->id);
-        $category->status = $category->status == 1 ? 0 : 1;
-        $category->save();
-        if($category->status == 1){
-            $notify[] = ['success', 'User Category active successfully.'];
-        }else{
-            $notify[] = ['success', 'User Category disabled successfully.'];
+        $resultUsers = User::orderBy('id','desc')->where('category',$request->id)->first();
+        if(!empty($resultUsers))
+        {
+          $notify[] = ['error', 'Sorry! This action can not perfomed, as user exists with this role.'];
+        }
+        else
+        {
+          $category = Category::find($request->id);
+          $category->status = $category->status == 1 ? 0 : 1;
+          $category->save();
+          if($category->status == 1){
+              $notify[] = ['success', 'Role active successfully.'];
+          }else{
+              $notify[] = ['success', 'Role disabled successfully.'];
+          }
         }
         return back()->withNotify($notify);
     }

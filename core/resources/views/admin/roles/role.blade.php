@@ -12,13 +12,14 @@
                                   <th>@lang('ID')</th>
                                   <th>@lang('Name')</th>
                                   <th>@lang('Description')</th>
+                                  <th>@lang('Permissions')</th>
                                   <th>@lang('Status')</th>
                                   <th>@lang('Action')</th>
                                 </tr>
                             </thead>
                             <tbody>
                             @forelse($userstype as $item)
-                                <tr>
+                                  <tr>
                                     <td data-label="@lang('ID')">
                                         {{ __($item->id) }}
                                     </td>
@@ -27,6 +28,9 @@
                                     </td>
                                     <td data-label="@lang('Description')">
                                         {{ __($item->description) }}
+                                    </td>
+                                    <td data-label="@lang('Permissions')">
+                                        {{ __($item->role_permission) }}
                                     </td>
                                     <td data-label="@lang('Status')">
                                         @if($item->status == 1)
@@ -39,7 +43,7 @@
                                         <button type="button" class="icon-btn ml-1 editBtn"
                                                 data-toggle="modal" data-target="#editModal"
                                                 data-category="{{ $item }}"
-                                                data-action="{{ route('admin.users.categories.update', $item->id) }}"
+                                                data-action="{{ route('admin.roles.update', $item->id) }}"
                                                 data-original-title="@lang('Update')">
                                             <i class="la la-pen"></i>
                                         </button>
@@ -87,12 +91,12 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"> @lang('Add User Category')</h5>
+                    <h5 class="modal-title"> @lang('Add Roles')</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ route('admin.users.categories.store')}}" method="POST">
+                <form action="{{ route('admin.roles.store')}}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
@@ -102,6 +106,29 @@
                         <div class="form-group">
                             <label class="form-control-label font-weight-bold"> @lang('Description')</label>
                             <input type="text" class="form-control" placeholder="@lang('Enter Description.')" name="description" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-label font-weight-bold"> @lang('Booking Permissions')</label>
+                            <div class="custom-control custom-checkbox">
+              								<input type="checkbox" id="add_booking" data-checktype="booking-permission" class="permissionsCheckbox custom-control-input" name="booking_permission[]" value="add_booking">
+              								<label class="custom-control-label activityPermissionLabel" for="add_booking">Add Booking</label>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                              <input type="checkbox" id="payment_booking" data-checktype="booking-permission" class="permissionsCheckbox custom-control-input" name="booking_permission[]" value="payment_booking">
+              								<label class="custom-control-label activityPermissionLabel" for="payment_booking">Make Payment</label>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                              <input type="checkbox" id="invoice_booking" data-checktype="booking-permission" class="permissionsCheckbox custom-control-input" name="booking_permission[]" value="invoice_booking">
+              								<label class="custom-control-label activityPermissionLabel" for="invoice_booking">Invoice</label>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                              <input type="checkbox" id="refund_booking" data-checktype="booking-permission" class="permissionsCheckbox custom-control-input" name="booking_permission[]" value="refund_booking">
+              								<label class="custom-control-label activityPermissionLabel" for="refund_booking">Refund</label>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                              <input type="checkbox" id="payment_details_booking" data-checktype="booking-permission" class="permissionsCheckbox custom-control-input" name="booking_permission[]" value="payment_details_booking">
+              								<label class="custom-control-label activityPermissionLabel" for="payment_details_booking">Payment Details</label>
+              							</div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -119,7 +146,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"> @lang('Update User Category')</h5>
+                    <h5 class="modal-title"> @lang('Update Role')</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -134,6 +161,29 @@
                         <div class="form-group">
                             <label class="form-control-label font-weight-bold"> @lang('Description')</label>
                             <input type="text" class="form-control" placeholder="@lang('Enter Description')" name="description" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-label font-weight-bold"> @lang('Booking Permissions')</label>
+                            <div class="custom-control custom-checkbox">
+              								<input type="checkbox" id="eadd_booking" data-checktype="booking-permission" class="book_permissionsCheckbox custom-control-input" name="booking_permission_edit[]" value="add_booking">
+              								<label class="custom-control-label" for="eadd_booking">Add Booking</label>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                              <input type="checkbox" id="epayment_booking" data-checktype="booking-permission" class="book_permissionsCheckbox custom-control-input" name="booking_permission_edit[]" value="payment_booking">
+              								<label class="custom-control-label" for="epayment_booking">Make Payment</label>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                              <input type="checkbox" id="einvoice_booking" data-checktype="booking-permission" class="book_permissionsCheckbox custom-control-input" name="booking_permission_edit[]" value="invoice_booking">
+              								<label class="custom-control-label" for="einvoice_booking">Invoice</label>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                              <input type="checkbox" id="erefund_booking" data-checktype="booking-permission" class="book_permissionsCheckbox custom-control-input" name="booking_permission_edit[]" value="refund_booking">
+              								<label class="custom-control-label" for="erefund_booking">Refund</label>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                              <input type="checkbox" id="epayment_details_booking" data-checktype="booking-permission" class="book_permissionsCheckbox custom-control-input" name="booking_permission_edit[]" value="payment_details_booking">
+              								<label class="custom-control-label" for="epayment_details_booking">Payment Details</label>
+              							</div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -151,16 +201,16 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"> @lang('Active Category')</h5>
+                    <h5 class="modal-title"> @lang('Active Roles')</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ route('admin.users.categories.active.disable')}}" method="POST">
+                <form action="{{ route('admin.roles.active.disable')}}" method="POST">
                     @csrf
                     <input type="text" name="id" hidden="true">
                     <div class="modal-body">
-                        <p>@lang('Are you sure to active') <span class="font-weight-bold name"></span> @lang('User Category')?</p>
+                        <p>@lang('Are you sure to active') <span class="font-weight-bold name"></span> @lang('Roles')?</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
@@ -176,16 +226,16 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"> @lang('Disable Category')</h5>
+                    <h5 class="modal-title"> @lang('Disable Roles')</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ route('admin.users.categories.active.disable')}}" method="POST">
+                <form action="{{ route('admin.roles.active.disable')}}" method="POST">
                     @csrf
                     <input type="text" name="id" hidden="true">
                     <div class="modal-body">
-                        <p>@lang('Are you sure to disable') <span class="font-weight-bold name"></span> @lang('User Category')?</p>
+                        <p>@lang('Are you sure to disable') <span class="font-weight-bold name"></span> @lang('Roles')?</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
@@ -199,7 +249,7 @@
 
 @push('breadcrumb-plugins')
     <a href="javascript:void(0)" class="btn btn--primary box--shadow1 addBtn"><i class="fa fa-fw fa-plus"></i>@lang('Add New')</a>
-    <form action="{{route('admin.users.categories.search') }}" method="GET" class="form-inline float-sm-right bg--white mb-2 ml-0 ml-xl-2 ml-lg-0">
+    <form action="{{route('admin.roles.search') }}" method="GET" class="form-inline float-sm-right bg--white mb-2 ml-0 ml-xl-2 ml-lg-0">
         <div class="input-group has_append  ">
             <input type="text" name="search" class="form-control" placeholder="@lang('Name')" value="{{ $search ?? '' }}">
             <div class="input-group-append">
@@ -238,6 +288,19 @@
             var category = $(this).data('category');
             modal.find('input[name=name]').val(category.name);
             modal.find('input[name=description]').val(category.description);
+            modal.find($('.book_permissionsCheckbox')).prop('checked', false);
+
+            if(category.role_permission != null)
+            {
+              var strings = category.role_permission;
+              var substr  = strings.split(',');
+              substr.forEach(function(item) {
+                var checkboxes = $('input[name="booking_permission[]"]');
+                modal.find($('input:checkbox[name="booking_permission_edit[]"][value="' + item + '"]').prop('checked',true));
+                modal.find($('input:checkbox[name="booking_permission_edit[]"][value="' + item + '"]').prop('checked',true));
+              });
+            }
+            //modal.find('.book_permissionsCheckbox').attr('checked', 'checked');
             modal.modal('show');
         });
 

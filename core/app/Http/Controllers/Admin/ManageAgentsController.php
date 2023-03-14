@@ -198,7 +198,6 @@ class ManageAgentsController extends Controller
       return view('admin.users.email_details', compact('pageTitle','email'));
     }
 
-
     public function userLoginHistory($id)
     {
         $user = User::findOrFail($id);
@@ -207,8 +206,6 @@ class ManageAgentsController extends Controller
         $login_logs = $user->login_logs()->orderBy('id','desc')->with('user')->paginate(getPaginate());
         return view('admin.users.logins', compact('pageTitle', 'emptyMessage', 'login_logs'));
     }
-
-
 
     public function showEmailAllForm()
     {

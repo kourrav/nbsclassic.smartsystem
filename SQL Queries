@@ -1,0 +1,2 @@
+14-03-2023
+ALTER TABLE `user_categories` ADD `role_permission` TEXT NULL AFTER `description`; 
