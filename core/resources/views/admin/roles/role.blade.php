@@ -30,7 +30,18 @@
                                         {{ __($item->description) }}
                                     </td>
                                     <td data-label="@lang('Permissions')">
-                                        {{ __($item->role_permission) }}
+                                       <?php
+                                        if($item->role_permission != ""){
+                                          $arrayexpoode = explode(',', $item->role_permission);
+                                          echo "<ul>";
+                                          foreach($arrayexpoode as $key=>$lu)
+                                          {
+                                            $name = str_replace('_', ' ', $lu);
+                                            echo "<li>".ucwords($name)."</li>";
+                                          }
+                                          echo "</ul>";
+                                        }
+                                        ?>
                                     </td>
                                     <td data-label="@lang('Status')">
                                         @if($item->status == 1)

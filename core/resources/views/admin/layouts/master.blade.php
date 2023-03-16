@@ -38,6 +38,7 @@
     <!-- dashdoard main css -->
     <link rel="stylesheet" href="{{asset('assets/admin/css/app.css')}}">
 
+    <link rel="stylesheet" href="{{asset($activeTemplateTrue.'css/jquery-ui.css') }}">
 
     @stack('style')
 </head>
@@ -48,6 +49,7 @@
 
 <!-- jQuery library -->
 <script src="{{asset('assets/global/js/jquery-3.6.0.min.js')}}"></script>
+<script src="{{asset($activeTemplateTrue.'js/jquery-ui.min.js') }}"></script>
 <!-- bootstrap js -->
 <script src="{{asset('assets/admin/js/vendor/grid.min.js')}}"></script>
 <!-- bootstrap-toggle js -->
@@ -70,7 +72,9 @@
 <script src="{{asset('assets/global/js/select2.min.js')}}"></script>
 <!-- main js -->
 <script src="{{asset('assets/admin/js/app.js')}}"></script>
-
+<script type="text/javascript">
+  var APP_ADMIN_URL = {!! json_encode(url('/admin')) !!}
+</script>
 {{-- LOAD NIC EDIT --}}
 <script>
     "use strict";

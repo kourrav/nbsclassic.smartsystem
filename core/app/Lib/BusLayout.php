@@ -19,6 +19,7 @@ class BusLayout
 
     public function sitLayouts(){
         $seatLayout = explode('x', str_replace(' ','', $this->fleet->seat_layout));
+        //echo "<pre>"; print_r($seatLayout); echo "</pre>"; 
         $layout['left'] = $seatLayout[0];
         $layout['right'] = $seatLayout[1];
         return (object)$layout;

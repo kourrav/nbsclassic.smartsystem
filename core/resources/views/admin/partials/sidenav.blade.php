@@ -123,6 +123,22 @@
                     </div>
                 </li>
                 <li class="sidebar-menu-item sidebar-dropdown">
+                    <a href="javascript:void(0)" class="{{menuActive('admin.booking.tickets.new*',3)}}">
+                        <i class="menu-icon las la-ticket-alt"></i>
+                        <span class="menu-title">@lang('Ticket Booking')</span>
+                    </a>
+                    <div class="sidebar-submenu {{menuActive('admin.booking.tickets.new*',2)}} ">
+                        <ul>
+                            <li class="sidebar-menu-item {{menuActive('admin.booking.tickets.new')}} ">
+                                <a href="{{route('admin.booking.tickets.new')}}" class="nav-link">
+                                  <i class="menu-icon las la-dot-circle"></i>
+                                  <span class="menu-title">@lang('Book Ticket')</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="sidebar-menu-item sidebar-dropdown">
                     <a href="javascript:void(0)" class="{{menuActive('admin.deposit*',3)}}">
                         <i class="menu-icon las la-credit-card"></i>
                         <span class="menu-title">@lang('Payment History')</span>
@@ -235,6 +251,7 @@
                         </ul>
                     </div>
                 </li>
+
                 <li class="sidebar-menu-item sidebar-dropdown">
                     <a href="javascript:void(0)" class="{{menuActive('admin.ticket*',3)}}">
                         <i class="menu-icon la la-ticket"></i>
@@ -333,14 +350,14 @@
                             <li class="sidebar-menu-item {{menuActive('admin.fleet.type')}} ">
                                 <a href="{{route('admin.fleet.type')}}" class="nav-link">
                                     <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Fleet Type')</span>
+                                    <span class="menu-title">@lang('Fleet List')</span>
                                 </a>
                             </li>
 
                             <li class="sidebar-menu-item  {{menuActive(['admin.fleet.vehicles', 'admin.fleet.vehicles.search'])}}">
                                 <a href="{{route('admin.fleet.vehicles')}}" class="nav-link">
                                     <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Vehicles')</span>
+                                    <span class="menu-title">@lang('Vehicles List')</span>
                                 </a>
                             </li>
 

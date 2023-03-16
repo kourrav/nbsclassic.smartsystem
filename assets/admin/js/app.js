@@ -240,3 +240,23 @@ $(document).on('keypress', '.onlyAlphNumeric', function(e)
 		var mask = new RegExp('^[A-Za-z0-9 ]*$')
     $(this).regexMask(mask);
 });
+
+$(document).on('click', '.get_basic_tc_details', function(e)
+{
+    var trip_title = $(this).data('trip-title');
+    var trip_id    = $(this).data('trip-id');
+    var redirecturl = "booking/ticket/"+trip_id;
+    setTimeout(function(){
+      window.location.href = APP_ADMIN_URL + "/"+redirecturl;
+    }, 100);
+});
+
+$(document).on('click', '.get_basic_tc_details', function(e)
+{
+    var trip_title = $(this).data('trip-title');
+    var trip_id    = $(this).data('trip-id');
+    var redirecturl = "booking/ticket/"+trip_id;
+    setTimeout(function(){
+      window.location.href = APP_ADMIN_URL + "/"+redirecturl;
+    }, 100);
+});

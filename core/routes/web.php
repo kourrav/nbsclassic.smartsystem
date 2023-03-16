@@ -117,7 +117,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('users/email-log/{id}', 'ManageUsersController@emailLog')->name('users.email.log');
         Route::get('users/email-details/{id}', 'ManageUsersController@emailDetails')->name('users.email.details');
 
-        //Users Type New Section 10-03-2023 By Ravinder Kaur
+        //Roles New Section 10-03-2023 By Ravinder Kaur
         Route::get('roles', 'ManageUsersController@usersRole')->name('roles');
         Route::post('roles', 'ManageUsersController@usersRoleStore')->name('roles.store');
         Route::post('roles/update/{id}', 'ManageUsersController@usersRoleUpdate')->name('roles.update');
@@ -141,6 +141,14 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('agents/login/{id}', 'ManageAgentsController@login')->name('agents.login');
         Route::get('agents/email-log/{id}', 'ManageAgentsController@emailLog')->name('agents.email.log');
         Route::get('agents/email-details/{id}', 'ManageAgentsController@emailDetails')->name('agents.email.details');
+
+        //Ticket Booking New Module Ravinder 15-03-2023
+        Route::get('booking/tickets/new', 'ManageTicketBookingController@searchTicket')->name('booking.tickets.new');
+        Route::get('booking/ticket/search','ManageTicketBookingController@ticketSearch')->name('booking.tickets.search');
+        Route::get('booking/ticket/{id}', 'ManageTicketBookingController@showSeat')->name('booking.tickets.seats');
+        Route::get('booking/ticket/get-price', 'ManageTicketBookingController@getTicketPrice')->name('booking.tickets.get-price');
+        Route::post('booking/ticket/book/{id}', 'ManageTicketBookingController@bookTicket')->name('booking.tickets.book');
+
 
         /*
         |--------------------------------------------------------------------------
