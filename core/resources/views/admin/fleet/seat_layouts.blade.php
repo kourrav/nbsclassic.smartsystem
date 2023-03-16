@@ -142,7 +142,7 @@
 @endsection
 
 @push('breadcrumb-plugins')
-    <a href="javascript:void(0)" class="btn btn-sm btn--primary box--shadow1 text--small addBtn"><i class="fa fa-fw fa-plus"></i>@lang('Add New')</a>
+    <a href="javascript:void(0)" class="btn btn-sm btn--primary box--shadow1 text--small addBtn"><i class="fa fa-fw fa-plus"></i>@lang('Add New ')</a>
 @endpush
 
 @push('script')

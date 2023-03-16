@@ -33,7 +33,7 @@ class ManageFleetController extends Controller
         $request->validate([
             'layout' => 'required|unique:seat_layouts,layout,'.$id
         ]);
-        
+
         $seat = SeatLayout::find($request->id);
         $seat->layout = $request->layout;
         $seat->save();

@@ -42,11 +42,7 @@
                                     <input class="form-control" type="text" name="password" value="" required>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-control-label font-weight-bold">@lang('Gender')<span class="text-danger">*</span></label>
-                                    <input class="form-control" type="text" name="firstname" value="" required>
-                                </div>
+        
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">

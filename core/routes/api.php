@@ -13,10 +13,10 @@ Route::namespace('Api')->name('api.')->group(function(){
 	Route::namespace('Auth')->group(function(){
 		Route::post('login', 'LoginController@login');
 		Route::post('register', 'RegisterController@register');
-		
+
 	    Route::post('password/email', 'ForgotPasswordController@sendResetCodeEmail');
 	    Route::post('password/verify-code', 'ForgotPasswordController@verifyCode');
-	    
+
 	    Route::post('password/reset', 'ResetPasswordController@reset');
 	});
 

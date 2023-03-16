@@ -27,10 +27,11 @@ class ManageTicketBookingController extends Controller
       $this->activeTemplate = activeTemplate();
   }
   public function searchTicket(){
+    //echo"<pre>"; print_r($trips); die(); echo"<pre>";
       $pageTitle = 'Search Tickets';
       $emptyMessage = 'There is no trip available';
       $fleetType = FleetType::active()->get();
-      //$trips = Trip::with(['fleetType' ,'route', 'schedule', 'startFrom' , 'endTo'])->where('status', 1)->paginate(getPaginate(10));
+      $trips = Trip::with(['fleetType' ,'route', 'schedule', 'startFrom' , 'endTo'])->where('status', 1)->paginate(getPaginate(10));
       $trips = array();
       if(auth()->user()){
           $layout = 'layouts.master';
@@ -48,7 +49,7 @@ class ManageTicketBookingController extends Controller
       if($request->pickup == "" && $request->destination == ""){
           $notify[] = ['error', 'Please select pickup point and destination point'];
           return redirect()->back()->withNotify($notify);
-      }      
+      }
       if($request->pickup && $request->destination && $request->pickup == $request->destination){
           $notify[] = ['error', 'Please select pickup point and destination point properly'];
           return redirect()->back()->withNotify($notify);
@@ -63,7 +64,7 @@ class ManageTicketBookingController extends Controller
       if($request->pickup && $request->destination){
           Session::put('pickup', $request->pickup);
           Session::put('destination', $request->destination);
-
+          //echo"<pre>";print_r();die();echo"<pre>";
           $pickup = $request->pickup;
           $destination = $request->destination;
           $trips = $trips->with('route')->get();
@@ -144,7 +145,7 @@ class ManageTicketBookingController extends Controller
   }
 
   public function showSeat($id){
-    //echo "<pre>"; print_r(Session::all()); echo "</pre>"; die('test');
+    // echo "<pre>"; print_r(Session::all()); echo "</pre>"; die('test');
       $trip = Trip::with( ['fleetType' ,'route', 'schedule', 'startFrom' , 'endTo', 'assignedVehicle.vehicle', 'bookedTickets'])->where('status', 1)->where('id', $id)->firstOrFail();
       $pageTitle = $trip->title;
       $route     = $trip->route;
