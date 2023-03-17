@@ -159,7 +159,7 @@ class ManageTripController extends Controller
         $request->validate([
             'start_from'   => 'required|date_format:H:i',
             'end_at'       => 'required|date_format:H:i',
-            
+
         ]);
 
         $check = Schedule::where('start_from', Carbon::parse($request->start_from)->format('H:i:s'))->where('end_at', Carbon::parse($request->end_at)->format('H:i:s'))->first();

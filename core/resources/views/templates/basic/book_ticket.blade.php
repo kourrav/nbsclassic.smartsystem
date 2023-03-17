@@ -62,6 +62,20 @@
                             </div>
                         </div>
 
+                        <div class="col-12">
+                            <label class="form-label">@lang('Select Price')</label>
+                            <div class="d-flex flex-wrap justify-content-between">
+                                <div class="form-group custom--radio">
+                                    <input id="business" type="radio" name="price" value="1">
+                                    <label class="form-label" for="business">@lang('Business Price')</label>
+                                </div>
+                                <div class="form-group custom--radio">
+                                    <input id="economy" type="radio" name="price" value="2">
+                                    <label class="form-label" for="business">@lang('Economy Price')</label>
+                                </div>
+                            </div>
+                        </div>
+
 
                         <div class="booked-seat-details my-3 d-none">
                             <label>@lang('Selected Seats')</label>
@@ -227,14 +241,14 @@
                             <a href="{{route('user.password.request')}}">@lang('Forgot Password?')</a>
                         </div>
                     </div>
-                    
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn--danger w-auto btn--sm px-3" data-bs-dismiss="modal">
                     @lang('Close')
                 </button>
                 <button id="loginsubmit_btn" class="btn btn--success w-auto btn--sm px-3" type="submit">@lang('Log In')</button>
-                
+
             </div>
             </form>
         </div>
@@ -345,15 +359,15 @@
                         @endforeach
                     </div>
                 </div>
-                @endif    
-                    
+                @endif
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn--danger w-auto btn--sm px-3" data-bs-dismiss="modal">
                     @lang('Close')
                 </button>
                 <button id="guestsubmit_btn" class="btn btn--success w-auto btn--sm px-3" type="submit">@lang('Guest Login')</button>
-                
+
             </div>
             </form>
         </div>
@@ -639,7 +653,7 @@
                     if(data == 1){
                         location.reload();
                     }
-                
+
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                         notify('error', jqXHR.responseJSON.errors.username[0]);
@@ -682,7 +696,7 @@
                     if(data == 1){
                         location.reload();
                     }
-                
+
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                         console.log(jqXHR);

@@ -77,6 +77,7 @@ class VehicleTicketController extends Controller
     }
 
     public function ticketPriceCreate(){
+    //  die('test');
         $pageTitle = "Add Ticket Price";
         $fleetTypes = FleetType::active()->get();
         $routes = VehicleRoute::active()->get();
@@ -105,6 +106,7 @@ class VehicleTicketController extends Controller
 
 
     public function ticketPriceStore(Request $request){
+      //die('test');
         $validation_rule = [
             'fleet_type'    => 'required|integer|gt:0',
             'route'         => 'required|integer|gt:0',
@@ -126,20 +128,26 @@ class VehicleTicketController extends Controller
             $notify[] = ['error', 'Duplicate fleet type and route can\'t be allowed'];
             return back()->withNotify($notify);
         }
-
+      //  die('test');
+        //echo"<pre>";print_r($request->main_price);die();
         $create = new TicketPrice();
         $create->fleet_type_id = $request->fleet_type;
         $create->vehicle_route_id = $request->route;
         $create->price = $request->main_price;
+      //  $create->price = $request->travel_price;
         $create->save();
 
         foreach($request->price as $key=>$val){
+          // echo"<pre>";print_r($request->price);die();
+          //echo"<pre>";print_r($priceByStoppage);die();
             $idArray = explode('-', $key);
             $priceByStoppage = new TicketPriceByStoppage();
             $priceByStoppage->ticket_price_id = $create->id;
             $priceByStoppage->source_destination = $idArray;
             $priceByStoppage->price = $val;
+            $priceByStoppage->travel_class=$val;
             $priceByStoppage->save();
+            //echo"<pre>";print_r($priceByStoppage);die();
         }
         $notify[] = ['success', 'Ticket price added successfully'];
         return back()->withNotify($notify);
