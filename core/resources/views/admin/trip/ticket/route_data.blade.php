@@ -10,9 +10,9 @@
                     </div>
                     <!-- <input type="text" name="price[{{$sd[0]->id}}-{{$sd[1]->id}}]" id="point-{{$loop->iteration}}" class="form-control prices-auto numeric-validation" placeholder="@lang('Enter a price')" required /> -->
 
-                    <input type="text" name="price[{{$sd[0]->id}}-{{$sd[1]->id}}]"  class="form-control  prices-auto numeric-validation" placeholder="@lang('Enter Bussiness a price')" required />
+                    <input type="text" name="business_price[{{$sd[0]->id}}-{{$sd[1]->id}}]"  class="form-control  prices-auto numeric-validation" placeholder="@lang('Enter Bussiness a price')" required />
 
-                    <input type="text" name="price[{{$sd[0]->id}}-{{$sd[1]->id}}]"  class="form-control prices-auto numeric-validation" placeholder="@lang('Enter Economic a price')" required />
+                    <input type="text" name="economy_price[{{$sd[0]->id}}-{{$sd[1]->id}}]"  class="form-control prices-auto numeric-validation" placeholder="@lang('Enter Economic a price')" required />
 
                 </div>
             </div>

@@ -95,12 +95,14 @@ class VehicleTicketController extends Controller
     public function getRouteData(Request $request){
         $route      = VehicleRoute::where('id', $request->vehicle_route_id)->where('status', 1)->first();
         $check      = TicketPrice::where('vehicle_route_id', $request->vehicle_route_id)->where('fleet_type_id', $request->fleet_type_id)->first();
+      //  echo"<pre>";print_r($check);die();
         if($check) {
             return response()->json(['error'=> trans('You have added prices for this fleet type on this route')]);
         }
         $stoppages  = array_values($route->stoppages);
         $stoppages  = stoppageCombination($stoppages, 2);
         return view('admin.trip.ticket.route_data', compact('stoppages', 'route'));
+
     }
 
 
@@ -113,6 +115,7 @@ class VehicleTicketController extends Controller
             'main_price'    => 'required|numeric',
             'price'         => 'sometimes|required|array|min:1',
             'price.*'       => 'sometimes|required|numeric',
+          // 'travel_class'  => 'sometimes|required|numeric';
         ];
         $messages = [
             'main_price'            => 'Price for Source to Destination',
@@ -128,24 +131,30 @@ class VehicleTicketController extends Controller
             $notify[] = ['error', 'Duplicate fleet type and route can\'t be allowed'];
             return back()->withNotify($notify);
         }
-      //  die('test');
+      //die('test');
         //echo"<pre>";print_r($request->main_price);die();
         $create = new TicketPrice();
         $create->fleet_type_id = $request->fleet_type;
         $create->vehicle_route_id = $request->route;
         $create->price = $request->main_price;
-      //  $create->price = $request->travel_price;
         $create->save();
 
-        foreach($request->price as $key=>$val){
-          // echo"<pre>";print_r($request->price);die();
-          //echo"<pre>";print_r($priceByStoppage);die();
+        foreach($request->business_price as $key=>$val){
             $idArray = explode('-', $key);
             $priceByStoppage = new TicketPriceByStoppage();
             $priceByStoppage->ticket_price_id = $create->id;
             $priceByStoppage->source_destination = $idArray;
             $priceByStoppage->price = $val;
-            $priceByStoppage->travel_class=$val;
+            $priceByStoppage->travel_class='business_price';
+            $priceByStoppage->save();
+        }
+        foreach($request->economy_price as $key1=>$val1){
+            $idArray = explode('-', $key1);
+            $priceByStoppage = new TicketPriceByStoppage();
+            $priceByStoppage->ticket_price_id = $create->id;
+            $priceByStoppage->source_destination = $idArray;
+            $priceByStoppage->price = $val1;
+            $priceByStoppage->travel_class='economy_price';
             $priceByStoppage->save();
             //echo"<pre>";print_r($priceByStoppage);die();
         }
