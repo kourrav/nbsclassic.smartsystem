@@ -238,6 +238,7 @@ class SiteController extends Controller
     }
 
     public function bookTicket(Request $request,$id){
+      //die('test');
         $request->validate([
             "pickup_point"   => "required|integer|gt:0",
             "dropping_point"  => "required|integer|gt:0",
@@ -259,7 +260,7 @@ class SiteController extends Controller
             $notify[] = ['error', 'Date of journey cant\'t be less than today.'];
             return redirect()->back()->withNotify($notify);
         }
-
+        //echo "<pre>";print_r($request->date_of_journey); die();
         $dayOff =  $date_of_journey->format('w');
         $trip   = Trip::findOrFail($id);
         $route              = $trip->route;
@@ -305,12 +306,14 @@ class SiteController extends Controller
 
         $getPrice    = $ticketPrice->prices()
                     ->where('source_destination', json_encode($sdArray))
+                    //->where('travel_class', json_encode($sdArray))
                     ->orWhere('source_destination', json_encode(array_reverse($sdArray)))
                     ->first();
         if (!$getPrice) {
             $notify[] = ['error','Invalid selection'];
             return back()->withNotify($notify);
         }
+        //echo "<pre>"; print_r($getPrice); die();
         $seats = array_filter((explode(',', $request->seats)));
         $unitPrice = getAmount($getPrice->price);
         $pnr_number = getTrx(10);
@@ -334,7 +337,7 @@ class SiteController extends Controller
     }
 
     public function ticketSearch(Request $request)
-    {
+    { //die('test');
         if($request->pickup && $request->destination && $request->pickup == $request->destination){
             $notify[] = ['error', 'Please select pickup point and destination point properly'];
             return redirect()->back()->withNotify($notify);
@@ -345,7 +348,7 @@ class SiteController extends Controller
         }
 
         $trips = Trip::active();
-
+        //die('test');
         if($request->pickup && $request->destination){
             Session::flash('pickup', $request->pickup);
             Session::flash('destination', $request->destination);

@@ -129,25 +129,36 @@
                                               @endforeach
                                           </select>
                                       </div>
+
+                                  </div>
+                                  <div class="col-4">
+                                      <div class="form-group">
+                                          <label for="price" class="form-label">@lang('Price')</label>
+                                          <select name="price" id="price" class="form--control select2">
+                                              <option value="">@lang('Select price')</option>
+                                              <option value ="">Business Price</option>
+                                              <option value ="">Economy Price</option>
+                                          </select>
+                                      </div>
                                   </div>
                                 </div>
-                                <div class="row">
+                                <div class="row seat-select seatselected">
                                   <div class="col-4">
                                       <div class="form-group">
                                           <label for="child_seat" class="form-label">@lang('Children Seat')</label>
-                                          <input type="number" name="child_seat" class="form--control child_seat" placeholder="@lang('Children Seat')" autocomplete="off" value="0" min="1">
+                                          <input type="number" name="child_seat seat" class="form--control child_seat seat" placeholder="@lang('Children Seat')" autocomplete="off" value="0" min="1">
                                       </div>
                                   </div>
                                   <div class="col-4">
                                       <div class="form-group">
                                           <label for="special_seat" class="form-label">@lang('Special Seat')</label>
-                                          <input type="number" name="special_seat" class="form--control special_seat" placeholder="@lang('Special Seat')" autocomplete="off" value="0" min="1">
+                                          <input type="number" name="special_seat seat" class="form--control special_seat seat" placeholder="@lang('Special Seat')" autocomplete="off" value="0" min="1">
                                       </div>
                                   </div>
                                   <div class="col-4">
                                       <div class="form-group">
                                           <label for="adult_seat" class="form-label">@lang('Adult Seat')</label>
-                                          <input type="number" name="adult_seat" class="form--control adult_seat" placeholder="@lang('Adult Seat')" autocomplete="off" value="0" min="1">
+                                          <input type="number" name="adult_seat seat" class="form--control adult_seat seat" placeholder="@lang('Adult Seat')" autocomplete="off" value="0" min="1">
                                       </div>
                                   </div>
                                 </div>
@@ -254,34 +265,67 @@
 
         //reset all seats
         function reset() {
+          //alert('hello');
             $('.seat-wrapper .seat').removeClass('selected');
             $('.seat-wrapper .seat').parent().removeClass('seat-condition selected-by-ladies selected-by-gents selected-by-others disabled');
             $('.selected-seat-details').html('');
-        }
-
+          }
         //click on seat
         $('.seat-wrapper .seat').on('click', function() {
+            if (!$(this).parent().hasClass("disabled")) $(this).toggleClass("selected");
             var pickupPoint = $('select[name="pickup_point"]').val();
             var droppingPoing = $('select[name="dropping_point"]').val();
-
-            if (pickupPoint && droppingPoing) {
+            if (pickupPoint && droppingPoing ) {
                 selectSeat();
             } else {
                 $(this).removeClass('selected');
                 notify('error', "@lang('Please select pickup point and dropping point before select any seat')")
+              //  notify('error', "@lang('Please select 6 seats at a time')")
             }
-        });
-
+          });
+        //  child seat
+        //$(document).on(".seatselected", function() {
+          // $('.seat ').on('click', function() {
+          //     alert($(".seat").val());
+          //       //notify('error', "@lang('Please enter the value less than 6 ')")
+          // });
+          //Special seat
+          // $('.special_seat ').on('click', function() {
+          //   ($(".special_seat").val());
+          //       // notify('error', "@lang('Please enter the value between 1-6 only')")
+          // });
+          // //Adult seat
+          // $('.adult_seat ').on('click', function() {
+          //   ($(".adult_seat").val());
+          //     //  notify('error', "@lang('Please enter the value between 1-6 only')")
+          // });
+        //  });
+          $(document).on(".seat-select", function() {
+        //  $(document)(".seat-select").on click(function(){
+            var sum=0;
+               var val1=parseInt($(".child_seat").val());
+               var val2=parseInt($(".special_seat").val());
+               var val3=parseInt($(".adult_seat").val());
+               var sum=parseInt(val1 + val2 + val3);
+               alert(sum);
+           });
         //select and booked seat
         function selectSeat() {
+           //alert('hello');
             let selectedSeats = $('.seat.selected');
-            let seatDetails = ``;
+           let  childrenseat='';
+            //console.log(selectedSeats+'sge');
+            let seatDetails = '';
             let price = $('input[name=price]').val();
             let subtotal = 0;
             let currency = '{{ __($general->cur_text) }}';
             let seats = '';
-            if (selectedSeats.length > 0) {
-                $('.booked-seat-details').removeClass('d-none');
+            if (selectedSeats.length > 5) {
+
+              notify('error', "@lang('Sorry you can not select more than 6 seats at a time')")
+              //  $('.seat.selected' ).removeAdd( "selected" )
+              $('.seat.selected' ).removeClass( "selected" );
+              $('.booked-seat-details').removeClass('d-none');
                 $.each(selectedSeats, function(i, value) {
                     seats += $(value).data('seat') + ',';
                     seatDetails += `<span class="list-group-item d-flex justify-content-between">${$(value).data('seat')} <span>${price} ${currency}</span></span>`;
@@ -292,9 +336,11 @@
                 $('.selected-seat-details').html(seatDetails);
                 $('.selected-seat-details').append(`<span class="list-group-item d-flex justify-content-between">@lang('Sub total')<span>${subtotal} ${currency}</span></span>`);
             } else {
+              // alert('hello');
                 $('.selected-seat-details').html('');
                 $('.booked-seat-details').addClass('d-none');
-            }
+                //$('.seat.selected' ).addClass("selected");
+              }
         }
 
         //on change date, pickup point and destination point show available seats

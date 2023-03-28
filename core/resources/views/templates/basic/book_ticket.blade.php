@@ -438,7 +438,7 @@
         //select and booked seat
         function selectSeat() {
             let selectedSeats = $('.seat.selected');
-            let seatDetails = ``;
+            let seatDetails = '';
             let price = $('input[name=price]').val();
             let subtotal = 0;
             let currency = '{{ __($general->cur_text) }}';
