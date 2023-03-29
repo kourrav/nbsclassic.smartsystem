@@ -165,7 +165,9 @@ class ManageTicketBookingController extends Controller
   }
 
   public function getTicketPrice(Request $request){
-      $ticketPrice       = TicketPrice::where('vehicle_route_id', $request->vehicle_route_id)->where('fleet_type_id', $request->fleet_type_id)->with('route')->first();
+      $ticketPrice       = TicketPrice::where('vehicle_route_id', $request->vehicle_route_id)->where('fleet_type_id', $request->fleet_type_id)
+      ->where('travel_class', $request->travel_class)->with('route')->first();
+      //echo "<pre>"; print_r($ ); die();
       $route              = $ticketPrice->route;
       $stoppages          = $ticketPrice->route->stoppages;
       $trip               = Trip::find($request->trip_id);
@@ -219,7 +221,8 @@ class ManageTicketBookingController extends Controller
           "dropping_point"  => "required|integer|gt:0",
           "date_of_journey" => "required|date",
           "seats"           => "required|string",
-          "gender"          => "required|integer"
+          "gender"          => "required|integer",
+          "price"           => "required"
       ],[
           "seats.required"  => "Please Select at Least One Seat"
       ]);

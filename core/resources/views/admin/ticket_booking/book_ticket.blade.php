@@ -187,7 +187,7 @@
                                           </div>
                                       </div>
                                   </div>
-                                <input type="text" name="seats" hidden>
+                                <input type="hidden" name="seats" class="total_hidden_seats">
                                 <div class="col-12 text-center">
                                   <button type="submit" class="book-bus-btn btn--primary">@lang('Process Booking')</button>
                                 </div>
@@ -265,54 +265,27 @@
 
         //reset all seats
         function reset() {
-          //alert('hello');
             $('.seat-wrapper .seat').removeClass('selected');
             $('.seat-wrapper .seat').parent().removeClass('seat-condition selected-by-ladies selected-by-gents selected-by-others disabled');
             $('.selected-seat-details').html('');
           }
         //click on seat
         $('.seat-wrapper .seat').on('click', function() {
-            if (!$(this).parent().hasClass("disabled")) $(this).toggleClass("selected");
+            if (!$(this).parent().hasClass("disabled"))
+            $(this).toggleClass("selected");
             var pickupPoint = $('select[name="pickup_point"]').val();
             var droppingPoing = $('select[name="dropping_point"]').val();
             if (pickupPoint && droppingPoing ) {
-                selectSeat();
+                selectSeat(this);
             } else {
                 $(this).removeClass('selected');
                 notify('error', "@lang('Please select pickup point and dropping point before select any seat')")
-              //  notify('error', "@lang('Please select 6 seats at a time')")
             }
           });
-        //  child seat
-        //$(document).on(".seatselected", function() {
-          // $('.seat ').on('click', function() {
-          //     alert($(".seat").val());
-          //       //notify('error', "@lang('Please enter the value less than 6 ')")
-          // });
-          //Special seat
-          // $('.special_seat ').on('click', function() {
-          //   ($(".special_seat").val());
-          //       // notify('error', "@lang('Please enter the value between 1-6 only')")
-          // });
-          // //Adult seat
-          // $('.adult_seat ').on('click', function() {
-          //   ($(".adult_seat").val());
-          //     //  notify('error', "@lang('Please enter the value between 1-6 only')")
-          // });
-        //  });
-          $(document).on(".seat-select", function() {
-        //  $(document)(".seat-select").on click(function(){
-            var sum=0;
-               var val1=parseInt($(".child_seat").val());
-               var val2=parseInt($(".special_seat").val());
-               var val3=parseInt($(".adult_seat").val());
-               var sum=parseInt(val1 + val2 + val3);
-               alert(sum);
-           });
+
         //select and booked seat
-        function selectSeat() {
-           //alert('hello');
-            let selectedSeats = $('.seat.selected');
+        function selectSeat(a) {
+           let selectedSeats = $('.seat.selected');
            let  childrenseat='';
             //console.log(selectedSeats+'sge');
             let seatDetails = '';
@@ -320,41 +293,78 @@
             let subtotal = 0;
             let currency = '{{ __($general->cur_text) }}';
             let seats = '';
-            if (selectedSeats.length > 5) {
+            if (selectedSeats.length ) {
+              if(selectedSeats.length > 6 ){
+                $(a).removeClass('selected');
+                notify('error', "@lang('Sorry you can not select more than 6 seats at a time')");
+              }
+              else {
+                $('.booked-seat-details').removeClass('d-none');
+                  $.each(selectedSeats, function(i, value) {
+                      seats += $(value).data('seat') + ',';
+                      seatDetails += `<span class="list-group-item d-flex justify-content-between">${$(value).data('seat')} <span>${price} ${currency}</span></span>`;
+                    //  console.log(currency);
+                      subtotal = subtotal + parseFloat(price);
+                    //  console.log(price);
+                  });
 
-              notify('error', "@lang('Sorry you can not select more than 6 seats at a time')")
-              //  $('.seat.selected' ).removeAdd( "selected" )
-              $('.seat.selected' ).removeClass( "selected" );
-              $('.booked-seat-details').removeClass('d-none');
-                $.each(selectedSeats, function(i, value) {
-                    seats += $(value).data('seat') + ',';
-                    seatDetails += `<span class="list-group-item d-flex justify-content-between">${$(value).data('seat')} <span>${price} ${currency}</span></span>`;
-                    subtotal = subtotal + parseFloat(price);
-                });
-
-                $('input[name=seats]').val(seats);
-                $('.selected-seat-details').html(seatDetails);
-                $('.selected-seat-details').append(`<span class="list-group-item d-flex justify-content-between">@lang('Sub total')<span>${subtotal} ${currency}</span></span>`);
-            } else {
-              // alert('hello');
+                  $('input[name=seats]').val(seats);
+                  $('.selected-seat-details').html(seatDetails);
+                  $('.selected-seat-details').append(`<span class="list-group-item d-flex justify-content-between">@lang('Sub total')<span>${subtotal} ${currency}</span></span>`);
+              }
+            }
+            else
+            {
                 $('.selected-seat-details').html('');
                 $('.booked-seat-details').addClass('d-none');
-                //$('.seat.selected' ).addClass("selected");
               }
         }
 
         //on change date, pickup point and destination point show available seats
-        $(document).on('change', 'select[name="pickup_point"], select[name="dropping_point"], input[name="date_of_journey"]', function(e) {
+        $(document).on('change', 'select[name="pickup_point"], select[name="dropping_point"], select[name="price"], input[name="date_of_journey"]', function(e) {
             showBookedSeat();
         });
 
-        //booked seat
+        //child,speacial,adult
+        $(document).on("change",".child_seat, .special_seat, .adult_seat",function() {
+        //  var selectedSeats;
+        // var totalSeats = $('.total_hidden_seats').val(aa);
+         var sum=0;
+         var val1=parseInt($(".child_seat").val());
+         var val2=parseInt($(".special_seat").val());
+         var val3=parseInt($(".adult_seat").val());
+         var sum=parseInt(val1 + val2 + val3);
+         console.log(sum);
+         //console.log( $('.total_hidden_seats').val(aa));
+        //    console.log($(".child_seat").val());
+        //   console.log  ($(".special_seat").val());
+        //     console.log($(".adult_seat").val());
+       // $('.child_seat, .special_seat, .adult_seat').addClass('selected');
+       //   if(sum > 6){
+       //    notify('error', "@lang('Please enter the passengers count 6 or less than six')")
+       //  }
+         //  if( sum == totalSeats   ){
+         //  notify('error', "@lang('sum is less ')")
+         // }
+         $('.total_hidden_seats').on('change', function() {
+                var totalSeats = $('.total_hidden_seats').val();
+           console.log( totalSeats);
+             // if (pickupPoint && droppingPoing ) {
+             //
+             // } else {
+             //
+             // }
+           });
+       });
+
+      //booked seat
         function showBookedSeat() {
             reset();
             var date = $('input[name="date_of_journey"]').val();
             var sourceId = $('select[name="pickup_point"]').find("option:selected").val();
             var destinationId = $('select[name="dropping_point"]').find("option:selected").val();
-
+            var price = $('select[name="price"]').find("option:selected").val();
+            console.log(price);
             if (sourceId == destinationId && destinationId != '') {
                 notify('error',"@lang('Source Point and Destination Point Must Not Be Same')");
                 $('select[name="dropping_point"]').val('').select2();
@@ -365,7 +375,7 @@
                 var fleetTypeId = '{{ $trip->fleetType->id }}';
 
                 if (sourceId && destinationId) {
-                    getprice(routeId, fleetTypeId, sourceId, destinationId, date)
+                    getprice(routeId, fleetTypeId, sourceId, destinationId, date,price)
                 }
             }
         }
@@ -392,6 +402,7 @@
                         modal.modal('show');
                         $('select[name="pickup_point"]').val('');
                         $('select[name="dropping_point"]').val('');
+                        $('select[name="price"]').val('');
                     } else {
                         var stoppages = response.stoppages;
 
@@ -440,10 +451,11 @@
                                 console.log(i, v);
                                 var bookedSource = v.pickup_point; //Booked
                                 var bookedDestination = v.dropping_point; //Booked
+                                var price = v.price;
 
                                 bookedSource = stoppages.indexOf(bookedSource.toString());
                                 bookedDestination = stoppages.indexOf(bookedDestination.toString());
-
+                                price = stoppages.indexOf(price.toString());
 
                                 if (reqDestination <= bookedSource || reqSource >= bookedDestination) {
                                     $.each(v.seats, function(index, val) {
