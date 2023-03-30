@@ -129,8 +129,7 @@
                                               @endforeach
                                           </select>
                                       </div>
-
-                                  </div>
+                                    </div>
                                   <div class="col-4">
                                       <div class="form-group">
                                           <label for="price" class="form-label">@lang('Price')</label>
@@ -179,17 +178,17 @@
                                   <div class="col-4 mt-2"><h6 class="form-label">Total</h6></div>
                                 </div>
 
-                                  <div class="booked-seat-details my-3 d-none">
-                                      <label>@lang('Selected Seats')</label>
-                                      <div class="list-group seat-details-animate">
-                                          <span class="list-group-item d-flex bg--base text-white justify-content-between">@lang('Seat Details')<span>@lang('Price')</span></span>
-                                          <div class="selected-seat-details">
-                                          </div>
-                                      </div>
-                                  </div>
-                                <input type="hidden" name="seats" class="total_hidden_seats">
+                                <div class="booked-seat-details my-3 d-none">
+                                    <label>@lang('Selected Seats')</label>
+                                    <div class="list-group seat-details-animate">
+                                        <span class="list-group-item d-flex bg--base text-white justify-content-between">@lang('Seat Details')<span>@lang('Price')</span></span>
+                                        <div class="selected-seat-details">
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="text" name="seats" class="total_hidden_seats">
                                 <div class="col-12 text-center">
-                                  <button type="submit" class="book-bus-btn btn--primary">@lang('Process Booking')</button>
+                                  <button type="submit" class="book-bus-btn btn--primary booking">@lang('Process Booking')</button>
                                 </div>
                             </form>
                         </div>
@@ -285,8 +284,7 @@
 
         //select and booked seat
         function selectSeat(a) {
-           let selectedSeats = $('.seat.selected');
-           let  childrenseat='';
+            let selectedSeats = $('.seat.selected');
             //console.log(selectedSeats+'sge');
             let seatDetails = '';
             let price = $('input[name=price]').val();
@@ -301,13 +299,14 @@
               else {
                 $('.booked-seat-details').removeClass('d-none');
                   $.each(selectedSeats, function(i, value) {
+
+                    //console.log(i);
                       seats += $(value).data('seat') + ',';
                       seatDetails += `<span class="list-group-item d-flex justify-content-between">${$(value).data('seat')} <span>${price} ${currency}</span></span>`;
-                    //  console.log(currency);
+                      //alert('hello');
                       subtotal = subtotal + parseFloat(price);
-                    //  console.log(price);
                   });
-
+                 console.log(price);
                   $('input[name=seats]').val(seats);
                   $('.selected-seat-details').html(seatDetails);
                   $('.selected-seat-details').append(`<span class="list-group-item d-flex justify-content-between">@lang('Sub total')<span>${subtotal} ${currency}</span></span>`);
@@ -317,45 +316,52 @@
             {
                 $('.selected-seat-details').html('');
                 $('.booked-seat-details').addClass('d-none');
-              }
+            }
         }
 
-        //on change date, pickup point and destination point show available seats
-        $(document).on('change', 'select[name="pickup_point"], select[name="dropping_point"], select[name="price"], input[name="date_of_journey"]', function(e) {
+
+    //on change date, pickup point and destination point show available seats
+        $(document).on('change', 'select[name="pickup_point"], select[name="dropping_point"], input[name="date_of_journey"]', function(e) {
             showBookedSeat();
         });
 
         //child,speacial,adult
-        $(document).on("change",".child_seat, .special_seat, .adult_seat",function() {
-        //  var selectedSeats;
-        // var totalSeats = $('.total_hidden_seats').val(aa);
-         var sum=0;
-         var val1=parseInt($(".child_seat").val());
-         var val2=parseInt($(".special_seat").val());
-         var val3=parseInt($(".adult_seat").val());
-         var sum=parseInt(val1 + val2 + val3);
-         console.log(sum);
-         //console.log( $('.total_hidden_seats').val(aa));
-        //    console.log($(".child_seat").val());
-        //   console.log  ($(".special_seat").val());
-        //     console.log($(".adult_seat").val());
-       // $('.child_seat, .special_seat, .adult_seat').addClass('selected');
-       //   if(sum > 6){
-       //    notify('error', "@lang('Please enter the passengers count 6 or less than six')")
-       //  }
-         //  if( sum == totalSeats   ){
-         //  notify('error', "@lang('sum is less ')")
-         // }
-         $('.total_hidden_seats').on('change', function() {
-                var totalSeats = $('.total_hidden_seats').val();
-           console.log( totalSeats);
-             // if (pickupPoint && droppingPoing ) {
-             //
-             // } else {
-             //
-             // }
-           });
-       });
+        $(document).on("change",".child_seat, .special_seat, .adult_seat",function(a,i) {
+             var sum=0;
+             var val1=parseInt($(".child_seat").val());
+             var val2=parseInt($(".special_seat").val());
+             var val3=parseInt($(".adult_seat").val());
+             var sum=parseInt(val1 + val2 + val3);
+              console.log(sum);
+             //console.log(i);
+
+                 // console.log($(".child_seat").val());
+                 // console.log  ($(".special_seat").val());
+                 // console.log($(".adult_seat").val());
+                 // $('.child_seat, .special_seat, .adult_seat').addClass('selected');
+             if(sum > 6){
+              notify('error', "@lang('Please enter the passengers count 6 or less than six')")
+            }
+        });
+//  $('.total_hidden_seats').val(".total_hidden_seats").on('click');
+
+    // $('.total_hidden_seats').trigger('change', function(){
+    // //  var count=($(".total_hidden_seats").val());
+    //   alert('helo');
+    // });
+
+                  // $('.total_hidden_seats').on('click', function(){
+                  //   var count=($(".total_hidden_seats").val());
+                  //   //var count = $('input[type="hidden"]').val();
+                  //   alert(count);
+                  //   //console.log(count);
+                  //   //return false;
+                  // });
+                  // $('.total_hidden_seats').on('change', function(){
+                  //   alert('hello');
+                  //   console.log(hello);
+                  //
+                  // });
 
       //booked seat
         function showBookedSeat() {
@@ -363,8 +369,6 @@
             var date = $('input[name="date_of_journey"]').val();
             var sourceId = $('select[name="pickup_point"]').find("option:selected").val();
             var destinationId = $('select[name="dropping_point"]').find("option:selected").val();
-            var price = $('select[name="price"]').find("option:selected").val();
-            console.log(price);
             if (sourceId == destinationId && destinationId != '') {
                 notify('error',"@lang('Source Point and Destination Point Must Not Be Same')");
                 $('select[name="dropping_point"]').val('').select2();
@@ -375,7 +379,7 @@
                 var fleetTypeId = '{{ $trip->fleetType->id }}';
 
                 if (sourceId && destinationId) {
-                    getprice(routeId, fleetTypeId, sourceId, destinationId, date,price)
+                    getprice(routeId, fleetTypeId, sourceId, destinationId, date)
                 }
             }
         }
@@ -402,7 +406,6 @@
                         modal.modal('show');
                         $('select[name="pickup_point"]').val('');
                         $('select[name="dropping_point"]').val('');
-                        $('select[name="price"]').val('');
                     } else {
                         var stoppages = response.stoppages;
 
@@ -451,11 +454,11 @@
                                 console.log(i, v);
                                 var bookedSource = v.pickup_point; //Booked
                                 var bookedDestination = v.dropping_point; //Booked
-                                var price = v.price;
+
 
                                 bookedSource = stoppages.indexOf(bookedSource.toString());
                                 bookedDestination = stoppages.indexOf(bookedDestination.toString());
-                                price = stoppages.indexOf(price.toString());
+
 
                                 if (reqDestination <= bookedSource || reqSource >= bookedDestination) {
                                     $.each(v.seats, function(index, val) {

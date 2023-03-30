@@ -450,7 +450,7 @@
                     seatDetails += `<span class="list-group-item d-flex justify-content-between">${$(value).data('seat')} <span>${price} ${currency}</span></span>`;
                     subtotal = subtotal + parseFloat(price);
                 });
-
+                console.log(price);
                 $('input[name=seats]').val(seats);
                 $('.selected-seat-details').html(seatDetails);
                 $('.selected-seat-details').append(`<span class="list-group-item d-flex justify-content-between">@lang('Sub total')<span>${subtotal} ${currency}</span></span>`);
