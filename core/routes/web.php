@@ -146,7 +146,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('booking/tickets/new', 'ManageTicketBookingController@searchTicket')->name('booking.tickets.new');
         Route::get('booking/ticket/search','ManageTicketBookingController@ticketSearch')->name('booking.tickets.search');
         Route::get('booking/ticket/{id}', 'ManageTicketBookingController@showSeat')->name('booking.tickets.seats');
-        Route::get('booking/ticket/get-price', 'ManageTicketBookingController@getTicketPrice')->name('booking.tickets.get-price');
+        Route::get('/booking/tickets/get-price', 'ManageTicketBookingController@getTicketPrice')->name('booking.tickets.get-price');
         Route::post('booking/ticket/book/{id}', 'ManageTicketBookingController@bookTicket')->name('booking.tickets.book');
 
 

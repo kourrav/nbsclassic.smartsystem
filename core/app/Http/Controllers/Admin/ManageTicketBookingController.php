@@ -165,19 +165,23 @@ class ManageTicketBookingController extends Controller
   }
 
   public function getTicketPrice(Request $request){
-  //  die('test');
-      $ticketPrice       = TicketPrice::where('vehicle_route_id', $request->vehicle_route_id)->where('fleet_type_id', $request->fleet_type_id)
-      ->where('travel_class', $request->travel_class)->with('route')->first();
-      // echo "<pre>"; print_r(); die();
+     //die('test');
+      $ticketPrice       = TicketPrice::where('vehicle_route_id', $request->vehicle_route_id)->where('fleet_type_id', $request->fleet_type_id)->with('route')->first();
+      //echo "<pre>"; print_r($bookedTicket); die();
       $route              = $ticketPrice->route;
+      //echo "<pre>"; print_r($ticketPrice->route); die();
       $stoppages          = $ticketPrice->route->stoppages;
       $trip               = Trip::find($request->trip_id);
-      $sourcePos         = array_search($request->source_id, $stoppages);
-      $destinationPos    = array_search($request->destination_id, $stoppages);
+      $sourcePos          = array_search($request->source_id, $stoppages);
+      $destinationPos     = array_search($request->destination_id, $stoppages);
 
+      // $price              = $ticketPrice->travel_class;
+      //echo "<pre>"; print_r($ticketPrice);die();
+      //echo "<pre>"; print_r(BookedTicket::where('trip_id', $request->trip_id)->where('travel_class', $request->travel_class)->where('date_of_journey', Carbon::parse($request->date)->format('Y-m-d'))->whereIn('status', [1,2])->get()->toArray());die();
       $bookedTicket  = BookedTicket::where('trip_id', $request->trip_id)->where('date_of_journey', Carbon::parse($request->date)->format('Y-m-d'))->whereIn('status', [1,2])->get()->toArray();
       $startPoint = array_search($trip->start_from , array_values($trip->route->stoppages));
       $endPoint = array_search($trip->end_to , array_values($trip->route->stoppages));
+
       if($startPoint < $endPoint){
           $reverse = false;
       }else{
@@ -196,10 +200,12 @@ class ManageTicketBookingController extends Controller
           ];
           return response()->json($data);
       }
+
       $sdArray  = [$request->source_id, $request->destination_id];
-      $getPrice = $ticketPrice->prices()->where('source_destination', json_encode($sdArray))->where('travel_class', json_encode($sdArray) )->orWhere('source_destination', json_encode(array_reverse($sdArray)))->first();
+      $getPrice = $ticketPrice->prices()->where('travel_class', $request->price)->where('source_destination', json_encode($sdArray))->orWhere('source_destination', json_encode(array_reverse($sdArray)))->first();
+      echo "<pre>"; print_r(  $getPrice); die();
       if($getPrice){
-          $price = $getPrice->price;
+          $price = $getPrice->travel_class;
       }else{
           $price = [
               'error' => 'Admin may not set prices for this route. So, you can\'t buy ticket for this trip.'
@@ -210,14 +216,14 @@ class ManageTicketBookingController extends Controller
       $data['reqDestination']    = $request->destination_id;
       $data['reverse']            = $reverse;
       $data['stoppages']          = $stoppages;
-      $data['price']              = $price;
+      $data['price']              = $request->travel_class;
       return response()->json($data);
   }
 
   public function bookTicket(Request $request,$id){
-    // die('test');
+      //die('test');
       $request->validate([
-          "pickup_point"   => "required|integer|gt:0",
+          "pickup_point"    => "required|integer|gt:0",
           "dropping_point"  => "required|integer|gt:0",
           "date_of_journey" => "required|date",
           "seats"           => "required|string",
@@ -226,7 +232,7 @@ class ManageTicketBookingController extends Controller
       ],[
           "seats.required"  => "Please Select at Least One Seat"
       ]);
-   // die('test');
+    // die('test');
       if(!auth()->user()){
           $notify[] = ['error', 'Without login you can\'t book any tickets'];
           return redirect()->route('user.login')->withNotify($notify);
@@ -252,13 +258,13 @@ class ManageTicketBookingController extends Controller
               return redirect()->back()->withNotify($notify);
           }
       }
-       //die('test');
-      $booked_ticket  = BookedTicket::where('trip_id', $id)->where('date_of_journey', Carbon::parse($request->date)->format('Y-m-d'))->whereIn('status',[1,2])->where('pickup_point', $request->pickup_point)->where('dropping_point', $request->dropping_point)->whereJsonContains('seats', rtrim($request->seats, ","))->get();
+       // die('test');
+      $booked_ticket  = BookedTicket::where('trip_id', $id)->where('date_of_journey', Carbon::parse($request->date)->format('Y-m-d'))->whereIn('status',[1,2])->where('pickup_point', $request->pickup_point)->where('dropping_point', $request->dropping_point)->where('travel_class', $request->travel_class)->whereJsonContains('seats', rtrim($request->seats, ","))->get();
       if($booked_ticket->count() > 0){
           $notify[] = ['error', 'Why you are choosing those seats which are already booked?'];
           return redirect()->back()->withNotify($notify);
       }
-
+      //echo "<pre>"; print_r($booked_ticket); die();
       $startPoint = array_search($trip->start_from , array_values($trip->route->stoppages));
       $endPoint = array_search($trip->end_to , array_values($trip->route->stoppages));
       if($startPoint < $endPoint){
@@ -277,20 +283,20 @@ class ManageTicketBookingController extends Controller
           $notify[] = ['error', 'Select Pickup Point & Dropping Point Properly'];
           return redirect()->back()->withNotify($notify);
       }
-
+      //die('test');
       $route = $trip->route;
-      $ticketPrice = TicketPrice::where('fleet_type_id', $trip->fleetType->id)->where('vehicle_route_id', $route->id)->first();
+      $ticketPrice = TicketPrice::where('fleet_type_id', $trip->fleetType->id)->where('vehicle_route_id', $route->id)->where('travel_class', $travel_class)->first();
       $sdArray     = [$request->pickup_point, $request->dropping_point];
-    //  echo"<pre>"; print_r( ); die('test');
+      //echo"<pre>"; print_r($getPrice ); die('test');
       $getPrice    = $ticketPrice->prices()
                   ->where('source_destination', json_encode($sdArray))
                   ->orWhere('source_destination', json_encode(array_reverse($sdArray)))
                   ->first();
-                   //echo"<pre>"; print_r( ); die('test');
+     //echo"<pre>"; print_r($getPrice); die('test');
       if (!$getPrice) {
           $notify[] = ['error','Invalid selection'];
           return back()->withNotify($notify);
-      }
+      }//die('test');
       $seats = array_filter((explode(',', $request->seats)));
       $unitPrice = getAmount($getPrice->price);
       $pnr_number = getTrx(10);
@@ -303,7 +309,8 @@ class ManageTicketBookingController extends Controller
       $bookedTicket->dropping_point = $request->dropping_point;
       $bookedTicket->seats = $seats;
       $bookedTicket->ticket_count = sizeof($seats);
-      $bookedTicket->unit_price = $unitPrice;
+      //$bookedTicket->unit_price = $unitPrice;
+      $bookedTicket->travel_class = $unitPrice;
       $bookedTicket->sub_total = sizeof($seats) * $unitPrice;
       $bookedTicket->date_of_journey = Carbon::parse($request->date_of_journey)->format('Y-m-d');
       $bookedTicket->pnr_number = $pnr_number;
@@ -312,9 +319,4 @@ class ManageTicketBookingController extends Controller
       session()->put('pnr_number',$pnr_number);
       return redirect()->route('user.deposit');
   }
-
-
-
-
-
 }

@@ -133,10 +133,10 @@
                                   <div class="col-4">
                                       <div class="form-group">
                                           <label for="price" class="form-label">@lang('Price')</label>
-                                          <select name="price" id="price" class="form--control select2">
+                                          <select name="price" id="price" class="form--control select2 select_drp_dwn">
                                               <option value="">@lang('Select price')</option>
-                                              <option value ="">Business Price</option>
-                                              <option value ="">Economy Price</option>
+                                              <option value ="business_price">Business Price</option>
+                                              <option value ="economy_price">Economy Price</option>
                                           </select>
                                       </div>
                                   </div>
@@ -301,6 +301,7 @@
                   $.each(selectedSeats, function(i, value) {
 
                     //console.log(i);
+                      //console.log(value);
                       seats += $(value).data('seat') + ',';
                       seatDetails += `<span class="list-group-item d-flex justify-content-between">${$(value).data('seat')} <span>${price} ${currency}</span></span>`;
                       //alert('hello');
@@ -318,10 +319,8 @@
                 $('.booked-seat-details').addClass('d-none');
             }
         }
-
-
-    //on change date, pickup point and destination point show available seats
-        $(document).on('change', 'select[name="pickup_point"], select[name="dropping_point"], input[name="date_of_journey"]', function(e) {
+        //on change date, pickup point and destination point show available seats
+        $(document).on('change', 'select[name="pickup_point"], select[name="dropping_point"],select[name="price"], input[name="date_of_journey"]', function(e) {
             showBookedSeat();
         });
 
@@ -357,6 +356,7 @@
                   //   //console.log(count);
                   //   //return false;
                   // });
+
                   // $('.total_hidden_seats').on('change', function(){
                   //   alert('hello');
                   //   console.log(hello);
@@ -369,6 +369,7 @@
             var date = $('input[name="date_of_journey"]').val();
             var sourceId = $('select[name="pickup_point"]').find("option:selected").val();
             var destinationId = $('select[name="dropping_point"]').find("option:selected").val();
+            var price = $('select[name="price"]').find("option:selected").val();
             if (sourceId == destinationId && destinationId != '') {
                 notify('error',"@lang('Source Point and Destination Point Must Not Be Same')");
                 $('select[name="dropping_point"]').val('').select2();
@@ -379,13 +380,13 @@
                 var fleetTypeId = '{{ $trip->fleetType->id }}';
 
                 if (sourceId && destinationId) {
-                    getprice(routeId, fleetTypeId, sourceId, destinationId, date)
+                    getprice(routeId, fleetTypeId, sourceId, destinationId, date,price)
                 }
             }
         }
 
         // check price, booked seat etc
-        function getprice(routeId, fleetTypeId, sourceId, destinationId, date) {
+        function getprice(routeId, fleetTypeId, sourceId, destinationId, date, price) {
             var data = {
                 "trip_id": '{{ $trip->id }}',
                 "vehicle_route_id": routeId,
@@ -393,19 +394,27 @@
                 "source_id": sourceId,
                 "destination_id": destinationId,
                 "date": date,
+                "price":price,
             }
+              //var price = $('select[name="business_price"]','select[name="economy_price"]').find("option:selected").val();
             $.ajax({
                 type: "get",
                 url: "{{ route('admin.booking.tickets.get-price') }}",
                 data: data,
                 success: function(response) {
-
+                  //  alert("hello");
                     if (response.error) {
+                      //alert('hello');
                         var modal = $('#alertModal');
                         modal.find('.error-message').text(response.error);
                         modal.modal('show');
                         $('select[name="pickup_point"]').val('');
                         $('select[name="dropping_point"]').val('');
+                        //$('select[name="price"]').val('');
+                        $('select[name="business_price"]','select[name="economy_price"]').find("option:selected").val();
+                        //alert( $(".select_drp_dwn option:selected").val('') );
+                        // $('select[name="business_price"]').val('');
+                        // $('select[name="economy_price"]').val('');
                     } else {
                         var stoppages = response.stoppages;
 
